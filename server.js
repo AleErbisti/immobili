@@ -20,7 +20,8 @@ app.get("/", (req, res, next) => {
     res.json({"message":"Ok"})
 });
 
-require("./endpoints/tasks.js")(app,connpool)
+require("./endpoints/tipoannuncio.js")(app,connpool)
+//require("./endpoints/tasks.js")(app,connpool)
 // Insert here other API endpoints
 
 // Default response for any other request
