@@ -1,26 +1,29 @@
 function endpoint(app, connpool) {
 
-    app.post("/api/tasks", (req, res) => {
+    app.post("/api/immobili", (req, res) => {
         var errors = []
-        /* controllo dati inseriti
-        if (!req.body.description) {
+        //controllo dati inseriti
+        if (!req.body.psw) {
+            errors.push("No description specified");
+        }
+        if (!req.body.email) {
             errors.push("No description specified");
         }
         if (req.body.status === "") {
             errors.push("No status specified");
         }
-        */
+        
         if (errors.length) {
             res.status(400).json({ "error": errors.join(",") });
             return;
         }
         var data = {
-            description: req.body.description,
-            status: req.body.status,
+            description: req.body.psw,
+            description: req.body.email,
         }
 
-        var sql = 'INSERT INTO task (description, status) VALUES (?,?)'
-        var params = [data.description, data.status]
+        var sql = 'INSERT INTO utente (psw, email) VALUES (?,?)'
+        var params = [data.psw, data.email]
         connpool.query(sql, params, (error, results) => {
             if (error) {
                 res.status(400).json({ "error": error.message })
@@ -38,8 +41,8 @@ function endpoint(app, connpool) {
 
 
 
-    app.get("/api/tasks", (req, res, next) => {
-        var sql = "select * from task"
+    app.get("/api/immobili", (req, res, next) => {
+        var sql = "select * from utente"
         var params = []
         connpool.query(sql, params, (err, rows) => {
             if (err) {
@@ -54,8 +57,8 @@ function endpoint(app, connpool) {
     });
 
 
-    app.get("/api/tasks/:id", (req, res) => {
-        var sql = "select * from task where task_id = ?"
+    app.get("/api/immobili/:id", (req, res) => {
+        var sql = "select * from utente where idUtente = ?"
         var params = [req.params.id]
         connpool.query(sql, params, (err, rows) => {
             if (err) {
@@ -70,16 +73,17 @@ function endpoint(app, connpool) {
     });
 
 
-    app.put("/api/tasks/:id", (req, res) => {
+    app.put("/api/immobili/:id", (req, res) => {
         var data = {
-            description: req.body.description,
-            status: req.body.status,
+            description: req.body.psw,
+            description: req.body.email,
+            
         }
         connpool.execute(
-            `UPDATE task set 
+            `UPDATE immobili set 
                description = COALESCE(?,description), 
                status = COALESCE(?,status) 
-               WHERE task_id = ?`,
+               WHERE idUtente = ?`,
             [data.description, data.status, req.params.id],
             function (err, result) {
                 if (err){
@@ -97,9 +101,9 @@ function endpoint(app, connpool) {
 
 
 
-    app.delete("/api/tasks/:id", (req, res) => {
+    app.delete("/api/immobili/:id", (req, res) => {
         connpool.execute(
-            'DELETE FROM task WHERE task_id = ?',
+            'DELETE FROM utente WHERE idUtente = ?',
             [req.params.id],
             function (err, result) {
                 if (err){
