@@ -115,7 +115,7 @@ function endpoint(app, connpool) {
             description: req.body.idTipo
         }
         connpool.execute(
-            `UPDATE immobili set 
+            `UPDATE annuncio set 
                description = COALESCE(?,description), 
                status = COALESCE(?,status) 
                WHERE idAnnuncio = ?`,

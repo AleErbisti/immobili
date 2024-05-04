@@ -80,7 +80,7 @@ function endpoint(app, connpool) {
             
         }
         connpool.execute(
-            `UPDATE immobili set 
+            `UPDATE utente set 
                description = COALESCE(?,description), 
                status = COALESCE(?,status) 
                WHERE idUtente = ?`,
