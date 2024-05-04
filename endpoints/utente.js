@@ -18,8 +18,8 @@ function endpoint(app, connpool) {
             return;
         }
         var data = {
-            description: req.body.psw,
-            description: req.body.email,
+            psw: req.body.psw,
+            email: req.body.email,
         }
 
         var sql = 'INSERT INTO utente (psw, email) VALUES (?,?)'

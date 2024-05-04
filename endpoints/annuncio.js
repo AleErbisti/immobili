@@ -39,15 +39,15 @@ function endpoint(app, connpool) {
             return;
         }
         var data = {
-            description: req.body.descrizione,
-            description: req.body.prezzo,
-            description: req.body.nstanze,
-            description: req.body.nbagni,
-            description: req.body.piano,
-            description: req.body.datapubblicazione,
-            description: req.body.idUtente,
-            description: req.body.idCitta,
-            description: req.body.idTipo,
+            descrizione: req.body.descrizione,
+            prezzo: req.body.prezzo,
+            nstanze: req.body.nstanze,
+            nbagni: req.body.nbagni,
+            piano: req.body.piano,
+            datapubblicazione: req.body.datapubblicazione,
+            idUtente: req.body.idUtente,
+            idCitta: req.body.idCitta,
+            idTipo: req.body.idTipo,
 
         }
 

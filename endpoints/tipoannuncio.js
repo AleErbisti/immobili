@@ -15,7 +15,7 @@ function endpoint(app, connpool) {
             return;
         }
         var data = {
-            description: req.body.descrizione
+            descrizione: req.body.descrizione
         }
 
         var sql = 'INSERT INTO tipoannuncio (descrizione) VALUES (?)'
