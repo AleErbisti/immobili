@@ -1,6 +1,6 @@
 function endpoint(app, connpool) {
 
-    app.post("/api/immobili", (req, res) => {
+    app.post("/api/annuncio", (req, res) => {
         var errors = []
         // controllo dati inseriti
         if (!req.body.descrizione) {
@@ -70,7 +70,7 @@ function endpoint(app, connpool) {
 
 
 
-    app.get("/api/immobili", (req, res, next) => {
+    app.get("/api/annuncio", (req, res, next) => {
         var sql = "select * from annuncio"
         var params = []
         connpool.query(sql, params, (err, rows) => {
@@ -86,7 +86,7 @@ function endpoint(app, connpool) {
     });
 
 
-    app.get("/api/immobili/:id", (req, res) => {
+    app.get("/api/annuncio/:id", (req, res) => {
         var sql = "select * from annuncio where idAnnuncio= ?"
         var params = [req.params.id]
         connpool.query(sql, params, (err, rows) => {
@@ -102,7 +102,7 @@ function endpoint(app, connpool) {
     });
 
 
-    app.put("/api/immobili/:id", (req, res) => {
+    app.put("/api/annuncio/:id", (req, res) => {
         var data = {
             description: req.body.descrizione,
             description: req.body.prezzo,
@@ -136,7 +136,7 @@ function endpoint(app, connpool) {
 
 
 
-    app.delete("/api/immobili/:id", (req, res) => {
+    app.delete("/api/annuncio/:id", (req, res) => {
         connpool.execute(
             'DELETE FROM annuncio WHERE idAnnuncio = ?',
             [req.params.id],

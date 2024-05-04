@@ -1,6 +1,6 @@
 function endpoint(app, connpool) {
 
-    app.post("/api/immobili", (req, res) => {
+    app.post("/api/utente", (req, res) => {
         var errors = []
         //controllo dati inseriti
         if (!req.body.psw) {
@@ -41,7 +41,7 @@ function endpoint(app, connpool) {
 
 
 
-    app.get("/api/immobili", (req, res, next) => {
+    app.get("/api/utente", (req, res, next) => {
         var sql = "select * from utente"
         var params = []
         connpool.query(sql, params, (err, rows) => {
@@ -57,7 +57,7 @@ function endpoint(app, connpool) {
     });
 
 
-    app.get("/api/immobili/:id", (req, res) => {
+    app.get("/api/utente/:id", (req, res) => {
         var sql = "select * from utente where idUtente = ?"
         var params = [req.params.id]
         connpool.query(sql, params, (err, rows) => {
@@ -73,7 +73,7 @@ function endpoint(app, connpool) {
     });
 
 
-    app.put("/api/immobili/:id", (req, res) => {
+    app.put("/api/utente/:id", (req, res) => {
         var data = {
             description: req.body.psw,
             description: req.body.email,
@@ -101,7 +101,7 @@ function endpoint(app, connpool) {
 
 
 
-    app.delete("/api/immobili/:id", (req, res) => {
+    app.delete("/api/utente/:id", (req, res) => {
         connpool.execute(
             'DELETE FROM utente WHERE idUtente = ?',
             [req.params.id],
