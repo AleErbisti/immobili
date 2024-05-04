@@ -6,6 +6,30 @@ function endpoint(app, connpool) {
         if (!req.body.descrizione) {
             errors.push("No description specified");
         }
+        if (!req.body.prezzo) {
+            errors.push("No description specified");
+        }
+        if (!req.body.nstanze) {
+            errors.push("No description specified");
+        }
+        if (!req.body.nbagni) {
+            errors.push("No description specified");
+        }
+        if (!req.body.piano) {
+            errors.push("No description specified");
+        }
+        if (!req.body.datapubblicazione) {
+            errors.push("No description specified");
+        }
+        if (!req.body.idUtente) {
+            errors.push("No description specified");
+        }
+        if (!req.body.idCitta) {
+            errors.push("No description specified");
+        }
+        if (!req.body.idTipo) {
+            errors.push("No description specified");
+        }
         if (req.body.status === "") {
             errors.push("No status specified");
         }
@@ -15,11 +39,20 @@ function endpoint(app, connpool) {
             return;
         }
         var data = {
-            description: req.body.descrizione
+            description: req.body.descrizione,
+            description: req.body.prezzo,
+            description: req.body.nstanze,
+            description: req.body.nbagni,
+            description: req.body.piano,
+            description: req.body.datapubblicazione,
+            description: req.body.idUtente,
+            description: req.body.idCitta,
+            description: req.body.idTipo,
+
         }
 
-        var sql = 'INSERT INTO tipoannuncio (descrizione) VALUES (?)'
-        var params = [data.descrizione]
+        var sql = 'INSERT INTO annuncio (descrizione,prezzo,nstanze,nbagni,piano,datapubblicazione,idUtente,idCitta,idTipo) VALUES (?,?,?,?,?,?,?,?,?)'
+        var params = [data.descrizione, data.prezzo, data.nstanze, data.nbagni, data.piano, data.datapubblicazione, data.idUtente, data.idCitta, data.idTipo]
         connpool.query(sql, params, (error, results) => {
             if (error) {
                 res.status(400).json({ "error": error.message })
@@ -38,7 +71,7 @@ function endpoint(app, connpool) {
 
 
     app.get("/api/immobili", (req, res, next) => {
-        var sql = "select * from tipoannuncio"
+        var sql = "select * from annuncio"
         var params = []
         connpool.query(sql, params, (err, rows) => {
             if (err) {
@@ -54,7 +87,7 @@ function endpoint(app, connpool) {
 
 
     app.get("/api/immobili/:id", (req, res) => {
-        var sql = "select * from tipoannuncio where idTipo= ?"
+        var sql = "select * from annuncio where idAnnuncio= ?"
         var params = [req.params.id]
         connpool.query(sql, params, (err, rows) => {
             if (err) {
@@ -71,13 +104,21 @@ function endpoint(app, connpool) {
 
     app.put("/api/immobili/:id", (req, res) => {
         var data = {
-            description: req.body.descrizione
+            description: req.body.descrizione,
+            description: req.body.prezzo,
+            description: req.body.nstanze,
+            description: req.body.nbagni,
+            description: req.body.piano,
+            description: req.body.datapubblicazione,
+            description: req.body.idUtente,
+            description: req.body.idCitta,
+            description: req.body.idTipo
         }
         connpool.execute(
             `UPDATE immobili set 
                description = COALESCE(?,description), 
                status = COALESCE(?,status) 
-               WHERE idTipo = ?`,
+               WHERE idAnnuncio = ?`,
             [data.description, data.status, req.params.id],
             function (err, result) {
                 if (err){
@@ -97,7 +138,7 @@ function endpoint(app, connpool) {
 
     app.delete("/api/immobili/:id", (req, res) => {
         connpool.execute(
-            'DELETE FROM tipoannuncio WHERE idTipo = ?',
+            'DELETE FROM annuncio WHERE idAnnuncio = ?',
             [req.params.id],
             function (err, result) {
                 if (err){
