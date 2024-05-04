@@ -1,19 +1,7 @@
 function endpoint(app, connpool) {
 
-    app.post("/api/immobili", (req, res) => {
+    app.post("/api/tipoannuncio", (req, res) => {
         var errors = []
-        // controllo dati inseriti
-        if (!req.body.descrizione) {
-            errors.push("No description specified");
-        }
-        if (req.body.status === "") {
-            errors.push("No status specified");
-        }
-        
-        if (errors.length) {
-            res.status(400).json({ "error": errors.join(",") });
-            return;
-        }
         var data = {
             descrizione: req.body.descrizione
         }
@@ -37,7 +25,7 @@ function endpoint(app, connpool) {
 
 
 
-    app.get("/api/immobili", (req, res, next) => {
+    app.get("/api/tipoannuncio", (req, res, next) => {
         var sql = "select * from tipoannuncio"
         var params = []
         connpool.query(sql, params, (err, rows) => {
@@ -53,7 +41,7 @@ function endpoint(app, connpool) {
     });
 
 
-    app.get("/api/immobili/:id", (req, res) => {
+    app.get("/api/tipoannuncio/:id", (req, res) => {
         var sql = "select * from tipoannuncio where idTipo= ?"
         var params = [req.params.id]
         connpool.query(sql, params, (err, rows) => {
@@ -69,16 +57,15 @@ function endpoint(app, connpool) {
     });
 
 
-    app.put("/api/immobili/:id", (req, res) => {
+    app.put("/api/tipoannuncio/:id", (req, res) => {
         var data = {
-            description: req.body.descrizione
+            descrizione: req.body.descrizione
         }
         connpool.execute(
-            `UPDATE immobili set 
-               description = COALESCE(?,description), 
-               status = COALESCE(?,status) 
+            `UPDATE tipoannuncio set 
+               description = COALESCE(?,descrizione), 
                WHERE idTipo = ?`,
-            [data.description, data.status, req.params.id],
+            [data.descrizione, req.params.idTipo],
             function (err, result) {
                 if (err){
                     res.status(400).json({"error": err.message})
@@ -95,7 +82,7 @@ function endpoint(app, connpool) {
 
 
 
-    app.delete("/api/immobili/:id", (req, res) => {
+    app.delete("/api/tipoannuncio/:id", (req, res) => {
         connpool.execute(
             'DELETE FROM tipoannuncio WHERE idTipo = ?',
             [req.params.id],
