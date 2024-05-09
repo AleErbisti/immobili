@@ -59,13 +59,13 @@ function endpoint(app, connpool) {
 
     app.put("/api/tipoannuncio/:id", (req, res) => {
         var data = {
-            descrizione: req.body.descrizione
+            "descrizione": req.body.descrizione
         }
         connpool.execute(
             `UPDATE tipoannuncio set 
-               description = COALESCE(?,descrizione), 
+               descrizione = COALESCE(?,descrizione)
                WHERE idTipo = ?`,
-            [data.descrizione, req.params.idTipo],
+            [data.descrizione, req.params.id],
             function (err, result) {
                 if (err){
                     res.status(400).json({"error": err.message})
